@@ -1,0 +1,167 @@
+#!/bin/bash
+
+# This script provides a reliable and consistent way to install and manage Ruby
+# on your laptop.
+
+fancy_echo() {
+  local fmt="$1"; shift
+
+  # shellcheck disable=SC2059
+  printf "\\n$fmt\\n" "$@"
+}
+
+append_to_file() {
+  local file="$1"
+  local text="$2"
+
+  if ! grep -qs "^$text$" "$file"; then
+    printf "\\n%s\\n" "$text" >> "$file"
+  fi
+}
+
+create_zshrc_and_set_it_as_shell_file() {
+  if [ ! -f "$HOME/.zshrc" ]; then
+    touch "$HOME/.zshrc"
+  fi
+
+  shell_file="$HOME/.zshrc"
+}
+
+create_bash_profile_and_set_it_as_shell_file() {
+  if [ ! -f "$HOME/.bash_profile" ]; then
+    touch "$HOME/.bash_profile"
+  fi
+
+  shell_file="$HOME/.bash_profile"
+}
+
+# shellcheck disable=SC2154
+trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
+
+set -e
+
+if [ ! -d "$HOME/.bin/" ]; then
+  mkdir "$HOME/.bin"
+fi
+
+case "$SHELL" in
+  */zsh) :
+    create_zshrc_and_set_it_as_shell_file
+    ;;
+  */bash)
+    create_bash_profile_and_set_it_as_shell_file
+    ;;
+  */fish)
+    shell_file="$HOME/.config/fish/config.fish"
+    ;;
+esac
+
+brew_is_installed() {
+  brew list -1 | grep -Fqx "$1"
+}
+
+tap_is_installed() {
+  brew tap | grep -Fqx "$1"
+}
+
+gem_install_or_update() {
+  if gem list "$1" | grep "^$1 ("; then
+    fancy_echo "Updating %s ..." "$1"
+    gem update "$@"
+  else
+    fancy_echo "Installing %s ..." "$1"
+    gem install "$@"
+  fi
+}
+
+latest_installed_ruby() {
+  find "$HOME/.rubies" -maxdepth 1 -name 'ruby-*' | tail -n1 | grep -E -o '\d+\.\d+\.\d+'
+}
+
+switch_to_latest_ruby() {
+  # shellcheck disable=SC1091
+  . /usr/local/share/chruby/chruby.sh
+  chruby "ruby-$(latest_installed_ruby)"
+}
+
+# shellcheck disable=SC2016
+append_to_file "$shell_file" 'export PATH="$HOME/.bin:$PATH"'
+
+if ! command -v brew >/dev/null; then
+  fancy_echo "Installing Homebrew ..."
+    curl -fsS \
+      'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
+
+    # shellcheck disable=SC2016
+    append_to_file "$shell_file" 'export PATH="/usr/local/bin:$PATH"'
+else
+  fancy_echo "Homebrew already installed. Skipping ..."
+fi
+
+fancy_echo "Updating Homebrew ..."
+cd "$(brew --repo)" && git fetch && git reset --hard origin/master && brew update
+
+fancy_echo "Verifying the Homebrew installation..."
+if brew doctor; then
+  fancy_echo "Your Homebrew installation is good to go."
+else
+  fancy_echo "Your Homebrew installation reported some errors or warnings."
+  echo "Review the Homebrew messages to see if any action is needed."
+fi
+
+# This avoids downloading the documentation each time you install a gem.
+append_to_file "$HOME/.gemrc" 'gem: --no-document'
+
+if command -v rvm >/dev/null; then
+  fancy_echo "Migrating your rubies from RVM to chruby"
+  append_to_file "$shell_file" 'RUBIES+=(~/.rvm/rubies/*)'
+elif command -v rbenv >/dev/null; then
+  fancy_echo "Migrating your rubies from rbenv to chruby"
+  append_to_file "$shell_file" 'RUBIES+=(~/.rbenv/versions/*)'
+fi
+
+if ! brew_is_installed "chruby"; then
+  fancy_echo 'Installing chruby, ruby-install, and the latest Ruby...'
+
+  brew bundle --file=- <<EOF
+  brew 'chruby'
+  brew 'ruby-install'
+EOF
+
+  append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.sh'
+  append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.sh'
+
+  ruby-install ruby
+
+  append_to_file "$shell_file" "chruby ruby-$(latest_installed_ruby)"
+
+  switch_to_latest_ruby
+else
+  brew bundle --file=- <<EOF
+  brew 'chruby'
+  brew 'ruby-install'
+EOF
+  fancy_echo 'Checking if a newer version of Ruby is available...'
+  switch_to_latest_ruby
+
+  ruby-install --latest > /dev/null
+  latest_stable_ruby="$(cat < "$HOME/.cache/ruby-install/ruby/stable.txt" | tail -n1)"
+
+  if ! [ "$latest_stable_ruby" = "$(latest_installed_ruby)" ]; then
+    fancy_echo "Installing latest stable Ruby version: $latest_stable_ruby"
+    ruby-install ruby
+  else
+    fancy_echo 'You have the latest version of Ruby'
+  fi
+fi
+
+fancy_echo 'Updating Rubygems...'
+gem update --system
+
+gem_install_or_update 'bundler'
+
+fancy_echo "Configuring Bundler ..."
+number_of_cores=$(sysctl -n hw.ncpu)
+bundle config --global jobs $((number_of_cores - 1))
+
+fancy_echo 'All done!'
