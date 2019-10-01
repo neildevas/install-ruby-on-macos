@@ -1,10 +1,51 @@
 # Install Ruby on macOS
 
-`install-ruby` is a script that installs and configures the tools necessary to
-manage multiple versions of Ruby on your Mac.
+`install-ruby` is a script that reliably configures your Mac so you can install
+Ruby gems (like Bundler, Jekyll, Rails), and switch between multiple versions of
+Ruby.
 
 It can be run multiple times on the same machine safely. It installs, upgrades,
 or skips packages based on what is already installed on the machine.
+
+Why
+---
+Installing Ruby and/or gems is a common source of confusion and frustration.
+Search for `You don't have write permissions for the /Library/Ruby/Gems/2.0.0 directory`
+in your favorite search engine, and you will see pages and pages of results.
+
+To make matters worse, the vast majority of suggestions are bad advice and
+incomplete. The reason for the error message above is because people are trying
+to install gems using the version of Ruby that comes pre-installed by Apple.
+That error message is there for a reason: you should not modify macOS system
+files. A common suggestion is to bypass that security protection by using
+`sudo`, which is not safe and can cause issues down the line that are hard to
+undo.
+
+The recommended way of using Ruby on a Mac is to install a newer (the
+macOS version is often outdated and is only updated during a major release),
+separate version in a different folder than the one that comes by default on
+macOS. The best and most flexible way to do that is with a Ruby manager. The
+most popular ones are: RVM, rbenv, and chruby. There are different ways to
+install these tools, and they all require additional configuration in your shell startup file, such as `.bash_profile` or `.zshrc`.
+
+When attempting to install and configure a Ruby manager manually, it's easy to
+miss or fumble a step due to human error or incomplete or outdated instructions. Since all of the steps are automatable, the best and most reliable way to set up Ruby on a Mac is to run a script like the one I've written. It has been tested many times on many computers and rarely fails.
+
+## Why chruby and not RVM or rbenv?
+
+It is the smallest, most reliable, and easiest to understand. I like that it does not do some of the things that other tools do:
+
+* Does not hook `cd`.
+* Does not install executable shims.
+* Does not require Rubies to be installed into your home directory.
+* Does not automatically switch Rubies by default.
+* Does not require write-access to the Ruby directory in order to install gems.
+
+Other folks who prefer `chruby`:
+
+* <https://kgrz.io/programmers-guide-to-choosing-ruby-version-manager.html>
+* <https://stevemarshall.com/journal/why-i-use-chruby/>
+* <https://linhmtran168.github.io/blog/2014/02/27/moving-from-rbenv-to-chruby/>
 
 What it sets up
 ---------------
