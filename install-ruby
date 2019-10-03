@@ -35,6 +35,14 @@ create_bash_profile_and_set_it_as_shell_file() {
   shell_file="$HOME/.bash_profile"
 }
 
+create_fish_config_and_set_it_as_shell_file() {
+  if [ ! -f "$HOME/.config/fish/config.fish" ]; then
+    touch "$HOME/.config/fish/config.fish"
+  fi
+
+  shell_file="$HOME/.config/fish/config.fish"
+}
+
 # shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
@@ -52,7 +60,7 @@ case "$SHELL" in
     create_bash_profile_and_set_it_as_shell_file
     ;;
   */fish)
-    shell_file="$HOME/.config/fish/config.fish"
+    create_fish_config_and_set_it_as_shell_file
     ;;
 esac
 
@@ -80,16 +88,23 @@ switch_to_latest_ruby() {
   chruby "ruby-$(latest_installed_ruby)"
 }
 
-# shellcheck disable=SC2016
-append_to_file "$shell_file" 'export PATH="$HOME/.bin:$PATH"'
+if ! [ echo $SHELL | grep "fish" ]; then
+  # shellcheck disable=SC2016
+  append_to_file "$shell_file" 'export PATH="$HOME/.bin:$PATH"'
+fi
 
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."
     curl -fsS \
       'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 
-    # shellcheck disable=SC2016
-    append_to_file "$shell_file" 'export PATH="/usr/local/bin:$PATH"'
+    if echo $SHELL | grep "fish"; then
+      # shellcheck disable=SC2016
+      append_to_file "$shell_file" 'set -g fish_user_paths "/usr/local/sbin" $fish_user_paths'
+    else
+      # shellcheck disable=SC2016
+      append_to_file "$shell_file" 'export PATH="/usr/local/bin:$PATH"'
+    fi
 else
   fancy_echo "Homebrew already installed. Skipping ..."
 fi
@@ -126,8 +141,13 @@ EOF
 EOF
     fi
 
-    append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.sh'
-    append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.sh'
+    if echo $SHELL | grep "fish"; then
+      append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.fish'
+      append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.fish'
+    else
+      append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.sh'
+      append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.sh'
+    fi
 
     ruby-install ruby
 
