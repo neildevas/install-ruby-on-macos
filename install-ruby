@@ -92,7 +92,7 @@ switch_to_latest_ruby() {
   chruby "ruby-$(latest_installed_ruby)"
 }
 
-if ! [ echo $SHELL | grep "fish" ]; then
+if ! echo "$SHELL" | grep "fish"; then
   # shellcheck disable=SC2016
   append_to_file "$shell_file" 'export PATH="$HOME/.bin:$PATH"'
 fi
@@ -102,7 +102,7 @@ if ! command -v brew >/dev/null; then
     curl -fsS \
       'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 
-    if echo $SHELL | grep "fish"; then
+    if echo "$SHELL" | grep "fish"; then
       # shellcheck disable=SC2016
       append_to_file "$shell_file" 'set -g fish_user_paths "/usr/local/sbin" $fish_user_paths'
     else
@@ -139,13 +139,13 @@ else
     brew 'ruby-install'
 EOF
 
-    if echo $SHELL | grep "fish"; then
+    if echo "$SHELL" | grep "fish"; then
       brew bundle --file=- <<EOF
       brew 'chruby-fish'
 EOF
     fi
 
-    if echo $SHELL | grep "fish"; then
+    if echo "$SHELL" | grep "fish"; then
       append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.fish'
       append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.fish'
     else
@@ -164,7 +164,7 @@ EOF
     brew 'ruby-install'
 EOF
 
-    if echo $SHELL | grep "fish"; then
+    if echo "$SHELL" | grep "fish"; then
       brew bundle --file=- <<EOF
       brew 'chruby-fish'
 EOF
