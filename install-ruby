@@ -130,6 +130,7 @@ append_to_file "$HOME/.gemrc" 'gem: --no-document'
 if command -v rbenv >/dev/null || command -v rvm >/dev/null; then
   fancy_echo 'We recommend chruby and ruby-install over RVM or rbenv.'
   echo "Please uninstall RVM or rbenv, and remove any related lines from $shell_file, then run this script again"
+  echo "To uninstall RVM, run 'rvm implode'. To uninstall rbenv, follow the instructions here: https://github.com/rbenv/rbenv#uninstalling-rbenv"
 else
   if ! brew_is_installed "chruby"; then
     fancy_echo 'Installing chruby, ruby-install, and the latest Ruby...'
