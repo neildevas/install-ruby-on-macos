@@ -96,6 +96,51 @@ points. This is the same password that you use to log in to your Mac.
 
 [Spotlight]: https://support.apple.com/en-us/HT204014
 
+How to tell if the script worked
+--------------------------------
+
+If the last thing the script displayed was "All done!", then everything the script was meant to do worked.
+
+To verify that the Ruby environment is properly configured, run one or more of these
+commands:
+
+```shell
+ruby -v
+```
+
+This should show `ruby 2.7.2p137` or later. If not, try quitting and relaunching Terminal.
+
+```shell
+which ruby
+```
+
+This should point to the `.rubies` directory in your home folder. For example:
+
+```
+/Users/monfresh/.rubies/ruby-2.7.2/bin/ruby
+```
+
+By default, the script installs the latest version of Ruby. To install an older version,
+run `ruby-install` followed by `ruby-` and the desired version. For example:
+
+```shell
+ruby-install ruby-2.6.6
+```
+
+To switch to this newly-installed version, run `chruby` followed by the version. For example:
+
+```shell
+chruby 2.6.6
+```
+
+Another way to automatically switch between versions is to add a `.ruby-version` file in your Ruby project with the version number prefixed with `ruby-`, such as `ruby-2.7.2`. To test that this works:
+
+1. `cd` into a folder outside of your project
+2. Run `chruby 2.6.6` (or some other version that is not the one specified in your `.ruby-version`)
+3. Verify that you are using 2.6.6 with `ruby -v`
+4. `cd` into your project
+5. Verify that you are using the specified version with `ruby -v`
+
 Debugging
 ---------
 
