@@ -10,7 +10,7 @@ or skips packages based on what is already installed on the machine.
 Why
 ---
 Installing Ruby and/or gems is a common source of confusion and frustration.
-Search for `You don't have write permissions for the /Library/Ruby/Gems/2.0.0 directory`
+Search for `You don't have write permissions for the /Library/Ruby/Gems/2.0.0 directory` or `command not found`
 in your favorite search engine, and you will see pages and pages of results.
 
 To make matters worse, the vast majority of suggestions are bad advice and
@@ -30,6 +30,8 @@ install these tools, and they all require additional configuration in your shell
 
 When attempting to install and configure a Ruby manager manually, it's easy to
 miss or fumble a step due to human error or incomplete or outdated instructions. Since all of the steps are automatable, the best and most reliable way to set up Ruby on a Mac is to run a script like the one I've written. It has been tested many times on many computers and rarely fails.
+
+Read more in my [definitive guide to installing Ruby gems on a Mac](https://www.moncefbelyamani.com/the-definitive-guide-to-installing-ruby-gems-on-a-mac/).
 
 ## Why chruby and not RVM or rbenv?
 
@@ -119,6 +121,22 @@ This should point to the `.rubies` directory in your home folder. For example:
 ```
 /Users/monfresh/.rubies/ruby-2.7.2/bin/ruby
 ```
+
+## How to install gems such as Rails or Jekyll
+
+Once you run the script, and have verified that it worked, then you can safely install gems using the `gem install` command. For example:
+
+```shell
+gem install jekyll
+```
+
+You should then be able to use the gems right away:
+
+```shell
+jekyll -v
+```
+
+## How to switch between Ruby versions and install different versions
 
 By default, the script installs the latest version of Ruby. To install an older version,
 run `ruby-install` followed by `ruby-` and the desired version. For example:
