@@ -25,13 +25,36 @@ The recommended way of using Ruby on a Mac is to install a newer (the
 macOS version is often outdated and is only updated during a major release),
 separate version in a different folder than the one that comes by default on
 macOS. The best and most flexible way to do that is with a Ruby manager. The
-most popular ones are: RVM, rbenv, and chruby. There are different ways to
+most popular ones are: RVM, rbenv, and chruby. I have chosen `chruby` in this script. See below for my reasons. There are different ways to
 install these tools, and they all require additional configuration in your shell startup file, such as `.bash_profile` or `.zshrc`.
 
 When attempting to install and configure a Ruby manager manually, it's easy to
 miss or fumble a step due to human error or incomplete or outdated instructions. Since all of the steps are automatable, the best and most reliable way to set up Ruby on a Mac is to run a script like the one I've written. It has been tested many times on many computers and rarely fails.
 
 Read more in my [definitive guide to installing Ruby gems on a Mac](https://www.moncefbelyamani.com/the-definitive-guide-to-installing-ruby-gems-on-a-mac/).
+
+## Supported macOS versions
+* macOS Catalina (10.15)
+* macOS Mojave (10.14)
+* macOS High Sierra (10.13)
+* macOS Sierra (10.12)
+* OS X El Capitan (10.11)
+* OS X Yosemite (10.10)
+* OS X Mavericks (10.9)
+
+What it sets up
+---------------
+
+* [Bundler] for managing Ruby gems
+* [chruby] for managing [Ruby] versions (recommended over RVM and rbenv)
+* [Homebrew] for managing operating system libraries (which also installs the prerequisite Apple command line tools)
+* [ruby-install] for installing different versions of Ruby
+
+[Bundler]: http://bundler.io/
+[chruby]: https://github.com/postmodern/chruby
+[Homebrew]: http://brew.sh/
+[Ruby]: https://www.ruby-lang.org/en/
+[ruby-install]: https://github.com/postmodern/ruby-install
 
 ## Why chruby and not RVM or rbenv?
 
@@ -48,28 +71,6 @@ Other folks who prefer `chruby`:
 * <https://kgrz.io/programmers-guide-to-choosing-ruby-version-manager.html>
 * <https://stevemarshall.com/journal/why-i-use-chruby/>
 * <https://linhmtran168.github.io/blog/2014/02/27/moving-from-rbenv-to-chruby/>
-
-What it sets up
----------------
-
-* [Bundler] for managing Ruby gems
-* [chruby] for managing [Ruby] versions (recommended over RVM and rbenv)
-* [Homebrew] for managing operating system libraries
-* [ruby-install] for installing different versions of Ruby
-
-[Bundler]: http://bundler.io/
-[chruby]: https://github.com/postmodern/chruby
-[Homebrew]: http://brew.sh/
-[Ruby]: https://www.ruby-lang.org/en/
-[ruby-install]: https://github.com/postmodern/ruby-install
-
-## Supported macOS versions
-* macOS Mojave (10.14)
-* macOS High Sierra (10.13)
-* macOS Sierra (10.12)
-* OS X El Capitan (10.11)
-* OS X Yosemite (10.10)
-* OS X Mavericks (10.9)
 
 Install
 -------
