@@ -10,7 +10,8 @@ or skips packages based on what is already installed on the machine.
 Why
 ---
 Installing Ruby and/or gems is a common source of confusion and frustration.
-Search for `You don't have write permissions for the /Library/Ruby/Gems/2.0.0 directory` or `command not found`
+Search for `You don't have write permissions for the /Library/Ruby/Gems/2.0.0 directory`
+or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/)"
 in your favorite search engine, and you will see pages and pages of results.
 
 To make matters worse, the vast majority of suggestions are bad advice and
@@ -18,7 +19,7 @@ incomplete. The reason for the error message above is because people are trying
 to install gems using the version of Ruby that comes pre-installed by Apple.
 That error message is there for a reason: you should not modify macOS system
 files. A common suggestion is to bypass that security protection by using
-`sudo`, which is not safe and can cause issues down the line that are hard to
+`sudo`, which is [not safe](https://www.moncefbelyamani.com/why-you-should-never-use-sudo-to-install-ruby-gems/) and can cause issues down the line that are hard to
 undo.
 
 The recommended way of using Ruby on a Mac is to install a newer (the
@@ -26,7 +27,7 @@ macOS version is often outdated and is only updated during a major release),
 separate version in a different folder than the one that comes by default on
 macOS. The best and most flexible way to do that is with a Ruby manager. The
 most popular ones are: RVM, rbenv, and chruby. I have chosen `chruby` in this script. See below for my reasons. There are different ways to
-install these tools, and they all require additional configuration in your shell startup file, such as `.bash_profile` or `.zshrc`.
+install these tools, and they all require additional configuration in your [shell startup file](https://www.moncefbelyamani.com/which-shell-am-i-using-how-can-i-switch/), such as `.bash_profile` or `.zshrc`.
 
 When attempting to install and configure a Ruby manager manually, it's easy to
 miss or fumble a step due to human error or incomplete or outdated instructions. Since all of the steps are automatable, the best and most reliable way to set up Ruby on a Mac is to run a script like the one I've written. It has been tested many times on many computers and rarely fails.
@@ -99,7 +100,9 @@ The [script](./install-ruby) itself is available in this repo for you to review
 if you want to see what it does and how it works.
 
 Note that the script will ask you to enter your macOS password at various
-points. This is the same password that you use to log in to your Mac.
+points. This is the same password that you use to log in to your Mac. The
+prompt comes from Homebrew, because it needs permissions to write to the
+`/usr/local` directory.
 
 **Once the script is done, quit and relaunch Terminal.**
 
@@ -165,6 +168,9 @@ Another way to automatically switch between versions is to add a `.ruby-version`
 3. Verify that you are using 2.6.6 with `ruby -v`
 4. `cd` into your project
 5. Verify that you are using the specified version with `ruby -v`
+
+Note that gems only get installed in a specific version of Ruby. If you installed jekyll in 2.7.2,
+and then you install 2.6.6 for example, you'll have to install jekyll again in 2.6.6.
 
 Debugging
 ---------
