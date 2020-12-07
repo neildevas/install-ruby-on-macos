@@ -33,7 +33,13 @@ miss or fumble a step due to human error or incomplete or outdated instructions.
 
 Read more in my [definitive guide to installing Ruby gems on a Mac](https://www.moncefbelyamani.com/the-definitive-guide-to-installing-ruby-gems-on-a-mac/).
 
+Note that this script installs the bare minimum for a working Ruby development
+environment. I also have another script called [laptop](https://github.com/monfresh/laptop)
+that installs other nice things to have, and it's customizable. I recommend the
+`laptop` script for most people.
+
 ## Supported macOS versions
+* I'll be testing BigSur soon. I don't expect anything to change.
 * macOS Catalina (10.15)
 * macOS Mojave (10.14)
 * macOS High Sierra (10.13)
