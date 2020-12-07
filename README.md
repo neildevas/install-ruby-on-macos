@@ -39,7 +39,10 @@ environment. I also have another script called [laptop](https://github.com/monfr
 that installs other nice things to have, and it's customizable. I recommend the
 `laptop` script for most people.
 
-## Supported macOS versions
+## Requirements
+
+Supported operating systems:
+
 * I'll be testing BigSur soon. I don't expect anything to change.
 * macOS Catalina (10.15)
 * macOS Mojave (10.14)
@@ -48,6 +51,12 @@ that installs other nice things to have, and it's customizable. I recommend the
 * OS X El Capitan (10.11)
 * OS X Yosemite (10.10)
 * OS X Mavericks (10.9)
+
+Supported shells:
+
+- bash
+- fish
+- zsh
 
 What it sets up
 ---------------
@@ -103,6 +112,11 @@ Note that the script will ask you to enter your macOS password at various
 points. This is the same password that you use to log in to your Mac. The
 prompt comes from Homebrew, because it needs permissions to write to the
 `/usr/local` directory.
+
+If you
+have `rbenv` or `RVM` installed, the script will ask you to uninstall them first
+and run the script again. Look at the script output for uninstallation
+instructions.
 
 **Once the script is done, quit and relaunch Terminal.**
 
