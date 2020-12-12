@@ -47,6 +47,18 @@ create_fish_config_and_set_it_as_shell_file() {
   shell_file="$HOME/.config/fish/config.fish"
 }
 
+configure_shell_file_for_chruby() {
+  if [[ $SHELL == *fish ]]; then
+    append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.fish'
+    append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.fish'
+  else
+    append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.sh'
+    append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.sh'
+  fi
+
+  append_to_file "$shell_file" "chruby ruby-$(latest_installed_ruby)"
+}
+
 # shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
@@ -97,10 +109,12 @@ if [[ ! $SHELL == *fish ]]; then
   append_to_file "$shell_file" 'export PATH="$HOME/.bin:$PATH"'
 fi
 
+fancy_echo 'Welcome to the Ruby installation script!'
+fancy_echo 'You should be and up and running with a working Ruby environment in a few minutes.'
+
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."
-    curl -fsS \
-      'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
     if [[ $SHELL == *fish ]]; then
       # shellcheck disable=SC2016
@@ -112,9 +126,6 @@ if ! command -v brew >/dev/null; then
 else
   fancy_echo "Homebrew already installed. Skipping ..."
 fi
-
-fancy_echo "Updating Homebrew ..."
-cd "$(brew --repo)" && git fetch && git reset --hard origin/master && brew update
 
 fancy_echo "Verifying the Homebrew installation..."
 if brew doctor; then
@@ -146,18 +157,8 @@ EOF
 EOF
     fi
 
-    if [[ $SHELL == *fish ]]; then
-      append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.fish'
-      append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.fish'
-    else
-      append_to_file "$shell_file" 'source /usr/local/share/chruby/chruby.sh'
-      append_to_file "$shell_file" 'source /usr/local/share/chruby/auto.sh'
-    fi
-
+    configure_shell_file_for_chruby
     ruby-install ruby
-
-    append_to_file "$shell_file" "chruby ruby-$(latest_installed_ruby)"
-
     switch_to_latest_ruby
   else
     brew bundle --file=- <<EOF
@@ -170,6 +171,8 @@ EOF
       brew 'chruby-fish'
 EOF
     fi
+
+    configure_shell_file_for_chruby
 
     fancy_echo 'Checking if a newer version of Ruby is available...'
     switch_to_latest_ruby
@@ -196,3 +199,4 @@ number_of_cores=$(sysctl -n hw.ncpu)
 bundle config --global jobs $((number_of_cores - 1))
 
 fancy_echo 'All done!'
+fancy_echo 'For more coding guides and tools, subscribe to my newsletter: https://eepurl.com/1-dtn'
