@@ -41,6 +41,8 @@ that installs other nice things to have, and it's customizable. I recommend the
 
 ## Requirements
 
+**Macs with the M1 chip are not currently supported**
+
 Supported operating systems:
 
 * I'll be testing BigSur soon. I don't expect anything to change.
