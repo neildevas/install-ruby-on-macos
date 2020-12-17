@@ -92,6 +92,7 @@ Other folks who prefer `chruby`:
 
 Install
 -------
+**IMPORTANT:** Before you run the script, make sure you have the latest Apple software updates installed. Check by going to System Preferences, then Software Update. If you're on Catalina, this does not mean upgrading to Big Sur, just the latest Catalina updates.
 
 Begin by opening the `Terminal` or `iTerm` application on your Mac. The easiest
 way to open an application in macOS is to search for it via [Spotlight]. The
