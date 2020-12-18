@@ -92,9 +92,6 @@ Other folks who prefer `chruby`:
 
 Install
 -------
-**READ THIS FIRST! PLEASE WAIT UNTIL DECEMBER 19 BEFORE RUNNING THIS SCRIPT.
-THERE SEEMS TO BE A BUG WITH ONE OF THE TOOLS THAT JUST STARTED HAPPENING A FEW DAYS AGO.
-I THINK I FOUND A FIX AND I'M TESTING IT TODAY. THANK YOU FOR YOUR PATIENCE!**
 
 **IMPORTANT:** Before you run the script, make sure you have the latest Apple software updates installed. Check by going to System Preferences, then Software Update. If you're on Catalina, this does not mean upgrading to Big Sur, just the latest Catalina updates.
 
