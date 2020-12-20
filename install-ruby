@@ -98,6 +98,12 @@ latest_installed_ruby() {
   find "$HOME/.rubies" -maxdepth 1 -name 'ruby-*' -print0 | sort -z | xargs -0 | grep -E -o '\d+\.\d+\.\d+' | tail -n1
 }
 
+switch_to_latest_ruby() {
+  # shellcheck disable=SC1091
+  . /usr/local/share/chruby/chruby.sh
+  chruby "ruby-$(latest_installed_ruby)"
+}
+
 if [[ ! $SHELL == *fish ]]; then
   # shellcheck disable=SC2016
   append_to_file "$shell_file" 'export PATH="$HOME/.bin:$PATH"'
@@ -168,6 +174,7 @@ EOF
 
     ruby-install ruby -- --with-openssl-dir=$(brew --prefix openssl)
     configure_shell_file_for_chruby
+    switch_to_latest_ruby
   else
     brew bundle --file=- <<EOF
     brew 'chruby'
@@ -189,6 +196,7 @@ EOF
       fancy_echo "Installing latest stable Ruby version: $latest_stable_ruby"
       ruby-install ruby -- --with-openssl-dir=$(brew --prefix openssl)
       configure_shell_file_for_chruby
+      switch_to_latest_ruby
     else
       fancy_echo 'You have the latest version of Ruby'
     fi
