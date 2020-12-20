@@ -126,6 +126,14 @@ instructions.
 
 [Spotlight]: https://support.apple.com/en-us/HT204014
 
+Debugging
+---------
+
+Your last run of the script will be saved to a file called `laptop.log` in your home
+folder. Read through it to see if you can debug the issue yourself, with the help of the [Troubleshooting Errors](https://github.com/monfresh/install-ruby-on-macos/wiki/Troubleshooting-Errors) Wiki article. If not,
+copy the entire contents of `laptop.log` into a
+[new GitHub Issue](https://github.com/monfresh/install-ruby-on-macos/issues/new) (or attach the whole log file to the issue) for me and I'll be glad to help you. If the script doesn't work for you, it's most likely a bug in my script, which I'd love to fix, so please don't hesitate to report any issues.
+
 How to tell if the script worked
 --------------------------------
 
@@ -190,11 +198,4 @@ Another way to automatically switch between versions is to add a `.ruby-version`
 Note that gems only get installed in a specific version of Ruby. If you installed jekyll in 2.7.2,
 and then you install 2.6.6 for example, you'll have to install jekyll again in 2.6.6.
 
-Debugging
----------
 
-Your last run of the script will be saved to a file called `laptop.log` in your
-home folder. Read through it to see if you can debug the issue yourself. If not,
-copy the entire contents of `laptop.log` into a
-[new GitHub Issue](https://github.com/monfresh/install-ruby-on-macos/issues/new).
-Or, attach the whole log file as an attachment.
