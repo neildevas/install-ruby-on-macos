@@ -10,7 +10,7 @@ or skips packages based on what is already installed on the machine.
 Why
 ---
 Installing Ruby and/or gems is a common source of confusion and frustration.
-Search for `You don't have write permissions for the /Library/Ruby/Gems/2.0.0 directory`
+Search for `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory`
 or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/)"
 in your favorite search engine, and you will see pages and pages of results.
 
@@ -39,8 +39,7 @@ environment. I also have another script called [laptop](https://github.com/monfr
 that installs other essentials for Rails apps, Jekyll sites, or other web development, and it's customizable. I recommend the
 `laptop` script for most people.
 
-For more coding guides, scripts, and screencasts, subscribe to my [newsletter](http://eepurl.com/1-dtn). It goes out once a week, with links to my
-[blog posts](https://www.moncefbelyamani.com), and sometimes exclusive goodies only for subscribers.
+For more coding guides, scripts, and screencasts, subscribe to my [free weekly newsletter](https://www.moncefbelyamani.com/newsletter).
 
 ## Requirements
 

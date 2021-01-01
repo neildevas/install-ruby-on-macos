@@ -228,4 +228,5 @@ number_of_cores=$(sysctl -n hw.ncpu)
 bundle config --global jobs $((number_of_cores - 1))
 
 fancy_echo 'All done!'
-fancy_echo 'For more coding guides and tools, subscribe to my newsletter: https://eepurl.com/1-dtn'
+fancy_echo 'For more coding guides and tools, subscribe to my newsletter:'
+fancy_echo 'https://www.moncefbelyamani.com/newsletter'
